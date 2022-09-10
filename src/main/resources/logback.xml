@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds">
+    <!-- in the absence of the class attribute, assume ch.qos.logback.core.hook.DelayingShutdownHook -->
+    <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook"/>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+<!--            <pattern>%d %-5level [%30.30thread] %30.30logger{5} - %msg%n</pattern>-->
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}][%thread] %-5level [%class.%method:%line] - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/reactive-study-%d{yyyyMMdd}.%i.log.gz</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d %-5level [%30.30thread] %30.30logger{5} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+
+    <!-- @formatter:off -->
+
+    <!-- @formatter:on -->
+
+    <root level="debug">
+        <appender-ref ref="STDOUT"/>
+
+    </root>
+</configuration>
