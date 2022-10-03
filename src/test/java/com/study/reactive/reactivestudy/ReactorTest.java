@@ -50,9 +50,9 @@ public class ReactorTest {
     }
 
     @Test
-    public void intervalFlux(){
+    public void intervalFlux() {
         Flux<Long> intervalFlux = Flux.interval(Duration.ofSeconds(1)).take(5);
-        intervalFlux.subscribe(f-> log.debug("interval = {}", f));
+        intervalFlux.subscribe(f -> log.debug("interval = {}", f));
 
         // 이상하다.. 아래 검증하는코드가 없으면 위에 로그가 안찍히고 그냥 끝남 ㅡ,.ㅡ;;;;; 왜 그럴까??
         StepVerifier.create(intervalFlux)
@@ -61,8 +61,21 @@ public class ReactorTest {
                 .expectNext(2L)
                 .expectNext(3L)
                 .expectNext(4L)
-              //  .expectNext(5L)
+                //  .expectNext(5L)
                 .verifyComplete();
+    }
+
+    @Test
+    public void mergeFlex() {
+        Flux<String> chracterFlex = Flux.just("adam", "superman", "eve")
+                .delayElements(Duration.ofSeconds(3));
+
+        Flux<String> foodFlux = Flux.just("bab", "water", "pizza")
+                .delayElements(Duration.ofSeconds(3, 100));
+
+        Flux<String> mergeFlus = chracterFlex.mergeWith(foodFlux);
+        mergeFlus.subscribe(f -> log.debug("flux -> {}", f));
+
 
     }
 }
